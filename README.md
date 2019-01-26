@@ -1,77 +1,59 @@
-# Elementor Hello Theme [![Built with Grunt](https://cdn.gruntjs.com/builtwith.svg)](http://gruntjs.com/)
+# understrap-child
+Basic Child Theme for UnderStrap Theme Framework: https://github.com/understrap/understrap
 
+## How it works
+Understrap Child Theme shares with the parent theme all PHP files and adds its own functions.php on top of the UnderStrap parent theme's functions.php.
 
+**IT DOES NOT LOAD THE PARENT THEMES CSS FILE(S)!** Instead it uses the UnderStrap Parent Theme as a dependency via npm and compiles its own CSS file from it.
 
-**Contributors:** [elemntor](https://profiles.wordpress.org/elemntor)  
-**Requires at least:** WordPress 4.7  
-**Tested up to:** WordPress 5.0  
-**Stable tag:** 1.1.0  
-**Version:** 1.1.0  
-**License:** GNU General Public License v3 or later  
-**License URI:** https://www.gnu.org/licenses/gpl-3.0.html  
-**Tags:** flexible-header, accessibility-ready, custom-colors, custom-menu, custom-logo, editor-style, featured-images, rtl-language-support, threaded-comments, translation-ready  
+Understrap Child Theme uses the Enqueue method to load and sort the CSS file the right way instead of the old @import method.
 
-The theme for Elementor plugin.
+## Installation
+1. Install the parent theme UnderStrap first: `https://github.com/understrap/understrap`
+   - IMPORTANT: If you download UnderStrap from GitHub make sure you rename the "understrap-master.zip" file to "understrap.zip" or you might have problems using this child theme!
+1. Upload the understrap-child folder to your wp-content/themes directory
+1. Go into your WP admin backend 
+1. Go to "Appearance -> Themes"
+1. Activate the UnderStrap Child theme
 
-## Description ##
+## Editing
+Add your own CSS styles to `/sass/theme/_child_theme.scss`
+or import you own files into `/sass/theme/understrap-child.scss`
 
-A plain-vanilla theme, best suited for building your site using Elementor plugin.
-This theme resets the environment and prepares it for smooth operation of Elementor.
+To overwrite Bootstrap's or UnderStrap's base variables just add your own value to:
+`/sass/theme/_child_theme_variables.scss`
 
-If you wish to customize your theme & site, just use **Elementor!**.
+For example, the "$brand-primary" variable is used by both Bootstrap and UnderStrap.
 
-### Hooks ###
+Add your own color like: `$brand-primary: #ff6600;` in `/sass/theme/_child_theme_variables.scss` to overwrite it. This change will automatically apply to all elements that use the $brand-primary variable.
 
-to prevent the loading of any of the following settings, add the following code to your child-theme functions.php:
+It will be outputted into:
+`/css/understrap-child.min.css` and `/css/understrap-child.css`
 
-`add_filter( 'choose-from-the-list-below', '__return_false' );`
+So you have one clean CSS file at the end and just one request.
 
-* `elementor_hello_theme_load_textdomain`               load theme's textdomain
-* `elementor_hello_theme_register_menus`                register the theme's default menu location
-* `elementor_hello_theme_add_theme_support`             register the various supported features
-* `elementor_hello_theme_add_woocommerce_support`       register woocommerce features, including product-gallery zoom, swipe & lightbox features
-* `elementor_hello_theme_enqueue_style`                 enqueue style
-* `elementor_hello_theme_register_elementor_locations`  register elementor settings
+## Developing With NPM, Gulp, SASS and Browser Sync
 
-### Style ###
+### Installing Dependencies
+- Make sure you have installed Node.js, Gulp, and Browser-Sync [1] on your computer globally
+- Open your terminal and browse to the location of your UnderStrap copy
+- Run: `$ npm install` then: `$ gulp copy-assets`
 
-In order to change the styling used throughout the site, use **Elementor**.
+### Running
+To work and compile your Sass files on the fly start:
 
-However, if for some reason there is still a need to add or change the site's css, please take into account the following:
-1. files located under `reset` directory, should **NOT** be edited directly.
-2. in order to change any of the values defined in `preset/variables.scss`, add your style code to `custom/pre_default.scss`.
-3. any new scss files should be located under `custom/` directory, and imported in `custom/custom.scss`.
+- `$ gulp watch`
 
-## Installation ##
+Or, to run with Browser-Sync:
 
-1. In your admin panel, go to Appearance > Themes and click the 'Add New' button.
-2. Type in 'Elementor Hello' in the search form and hit the 'Enter' key on your keyboard.
-3. Click on the 'Activate' button to use your new theme right away.
-4. Navigate to Elementor and start building your site.
+- First change the browser-sync options to reflect your environment in the file `/gulpconfig.json` in the beginning of the file:
+```javascript
+  "browserSyncOptions" : {
+    "proxy": "localhost/wordpress/",
+    "notify": false
+  }
+};
+```
+- then run: `$ gulp watch-bs`
 
-## Frequently Asked Questions ##
-
-* Does this theme support any plugins?
-
-Elementor Hello includes support for WooCommerce.
-
-* Can Font Style be added thru the theme's css file?
-
-Best practice is to use the styling capabilities in the Elementor plugin.
-
-## Changelog ##
-
-### 1.0 ###
-* Released: November 4, 2018
-
-Initial release
-
-### 1.1.0 ###
-* Released: December 26, 2018
-
-* New: use scss & do thorough style reset.
-* New: readme.
-* New: add hooks and child-theme preparations.
-* New: template parts search.
-* New: translations support.
-* Changed: re-write of already existing template parts.
+[1] Visit [https://browsersync.io/](https://browsersync.io/) for more information on Browser Sync
